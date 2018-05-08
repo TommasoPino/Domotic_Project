@@ -1,0 +1,73 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CC:22:3D:E3:CE:30",
+        "port": 51828,
+        "pin": "031-45-155"
+    },
+    "description": "This is an example configuration file with one fake accessory and one fake platform. You can use this as a template for creating your own configuration file containing devices you actually own.",
+    "accessories": [
+        {
+            "accessory": "Script2",
+            "name": "LED_test",
+            "on": "sh /home/pi/test/on.sh",
+            "off": "sh /home/pi/test/off.sh",
+            "fileState": "/home/pi/test/script.State",
+            "on_value": "true"
+        },
+        {
+            "accessory": "Script2",
+            "name": "LED_test_2",
+            "on": "sh /home/pi/test/on.sh",
+            "off": "sh /home/pi/test/off.sh",
+            "fileState": "/home/pi/test/script.State",
+            "on_value": "true"
+        },
+        {
+            "accessory": "Script2",
+            "name": "LED_WIFI",
+            "on": "sh /home/pi/test/on.sh",
+            "off": "sh /home/pi/test/off.sh",
+            "fileState": "/home/pi/test/script.State",
+            "on_value": "true"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "Cam Sal UP",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=0&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "Cam Sal DOWN",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=2&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "Cam Sal LEFT",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=4&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "Cam Sal RIGTH",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=6&onestep=1&user=admin&pwd=123456"
+        }
+    ],
+    "platforms": [
+        {
+            "platform": "Camera-ffmpeg",
+            "cameras": [
+                {
+                    "name": "Camera Salotto",
+                    "videoConfig": {
+                        "source": "-re -i http://192.168.1.150/videostream.cgi/?user=admin&pwd=123456",
+                        "stillImageSource": "-i http://192.168.1.150/snapshot.cgi/?user=admin&pwd=123456",
+                        "maxStreams": 2,
+                        "maxWidth": 1280,
+                        "maxHeight": 720,
+                        "maxFPS": 30
+                    }
+                }
+            ]                
+        }
+    ]
+}
