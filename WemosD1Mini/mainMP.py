@@ -7,6 +7,25 @@ import machine
 import os
 import time
 import ubinascii
+import urandom
+import math
+
+
+def translate(value, leftMin, leftMax, rightMin, rightMax):
+    # Figure out how 'wide' each range is
+    leftSpan = leftMax - leftMin
+    rightSpan = rightMax - rightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - leftMin) / float(leftSpan)
+
+    # Convert the 0-1 range into a value in the right range.
+    return rightMin + (valueScaled * rightSpan)
+
+def get_random_time():
+    num = translate(urandom.getrandbits(16), 0, 65535, 0, 10000)
+    integer  = math.floor(num)/1000 # the translate function returns a float, which we gotta deal with somehow
+    return integer
 
 def log(message):
     print(message)
@@ -150,7 +169,7 @@ while True:
         millis_pass = millis_new-millis_old
         if (millis_pass/min2millis>=waitTime):
             millis_old = millis_new
-            waitTime = 2
+            waitTime = 20
             ip  = get_ip_address()
             message = 'D,' + mac+','+ip+','+boardKind
             sendSocketBroadcast(message)
@@ -161,6 +180,8 @@ while True:
             elements = list(line.split(','))
             
             if elements[0].strip()=='S':
+                waitTime = get_random_time()
+                log('New waiting time: ' + str(waitTime))
                 if (ServerIP[0] != elements[1]):
                     log('build SERVERIP')
                     ServerIP[0] = elements[1]
@@ -172,7 +193,8 @@ while True:
                 else:
                     log('nothong change, server ip is: ' +str(ServerIP[0]))
                     log('nothong change, server port is: ' +str(ServerIP[1]))
-            
+
+                    
         except Exception as ex:
             pass
             # if str(ex).strip()=='[Errno 110] ETIMEDOUT':

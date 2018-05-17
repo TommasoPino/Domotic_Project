@@ -5,19 +5,11 @@
         "port": 51828,
         "pin": "031-45-155"
     },
-    "description": "This is an example configuration file with one fake accessory and one fake platform. You can use this as a template for creating your own configuration file containing devices you actually own.",
+    "description": "",
     "accessories": [
         {
             "accessory": "Script2",
             "name": "LED_test",
-            "on": "sh /home/pi/test/on.sh",
-            "off": "sh /home/pi/test/off.sh",
-            "fileState": "/home/pi/test/script.State",
-            "on_value": "true"
-        },
-        {
-            "accessory": "Script2",
-            "name": "LED_test_2",
             "on": "sh /home/pi/test/on.sh",
             "off": "sh /home/pi/test/off.sh",
             "fileState": "/home/pi/test/script.State",
@@ -30,6 +22,11 @@
             "off": "sh /home/pi/test/off.sh",
             "fileState": "/home/pi/test/script.State",
             "on_value": "true"
+        },
+        {
+            "accessory": "StatelessLock",
+            "name": "TESTdoor",
+            "open": "echo True"
         },
         {
             "accessory": "StatelessSwitch",
