@@ -1,0 +1,27 @@
+#!/bin/sh
+
+
+HOMEBRIDGE=/opt/nodejs/bin/homebridge
+FOREVER=/opt/nodejs/bin/forever
+USERHOME=/home/pi/.homebridge/
+
+
+case "$1" in
+    start)
+        su - pi -c "$FOREVER start $HOMEBRIDGE" 
+        ;;
+    stop)
+        su - pi -c "$FOREVER stop $HOMEBRIDGE"
+        $FOREVER stopall
+        ;;
+    restart)
+        su - pi -c "$FOREVER restart $HOMEBRIDGE"
+        $FOREVER restartall
+        ;;
+    status)
+        su - pi -c "$FOREVER list"
+        $FOREVER list
+        ;;
+esac
+
+exit 0

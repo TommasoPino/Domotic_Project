@@ -141,12 +141,10 @@ def listenLocal():
         pass
     return
 
-
 def checkFileAndCreate(filename):
     if not os.path.isfile(filename):
         file = open(filename, 'w')
         file.close()
-
 
 def listenBroadcast():
     global DeviceDict
@@ -160,9 +158,13 @@ def listenBroadcast():
             log('Message from a device')
             try:
                 Device = DeviceDict[elements[1]]
-                log('Device already present on table')
+                log('Device already present on table, checking for updates')
+                if Device[0]!=elements[2]:
+                    log('changed ip from ' + str(Device[0]) + ' to ' + str(elements[2]))
+                    DeviceDict[elements[1]] = elements[2:]
+                    updatetable(DeviceDict,FileDataDevice)
             except KeyError:
-                DeviceDict[elements[1]] = [elements[2:]]
+                DeviceDict[elements[1]] = elements[2:]
                 add2table(elements[1:], FileDataDevice)
         elif elements[0] == 'S':
             log('Message from Server ignored')
@@ -170,6 +172,20 @@ def listenBroadcast():
             log('Message ignored')
     except sock.timeout:
         pass
+
+def updatetable(devicedict,filename):
+    log('updating table')
+    try:
+        # file = open(filename, 'w')
+        # file.close()
+        for deviceID, deviceList in devicedict:
+            log(str(deviceID + deviceList[0]))
+            # add2table(deviceID+deviceList,filename)
+        # log('done')
+    except Exception as ex:
+        log(str(ex))
+        
+    
 
 
 # start the program

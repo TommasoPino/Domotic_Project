@@ -12,9 +12,9 @@ def get_ip_address():
 def StatusSwitch(message):
     elements = message.split(',')
     if elements[-1]=='ON':
-        print('True')
+        print('true')
     else:
-        print('False')
+        print('false')
 
 # 'ec:fa:bc:87:77:bd,PIN,0,OFF'
 # 'C2:A7:1C:F0:0D:37,PIN,0,OFF'
@@ -28,7 +28,7 @@ sock = socket.socket(socket.AF_INET, # Internet
 sock.connect(ServerIP)
 sock.send(MESSAGE)
 message = sock.recv(1024)
-print(message)
+#print(message)
 if len(sys.argv)==2:
     kind = 'I'
 else:

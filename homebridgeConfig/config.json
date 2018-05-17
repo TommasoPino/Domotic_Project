@@ -10,46 +10,51 @@
         {
             "accessory": "Script2",
             "name": "LED_test",
-            "on": "sh /home/pi/test/on.sh",
-            "off": "sh /home/pi/test/off.sh",
-            "fileState": "/home/pi/test/script.State",
-            "on_value": "true"
-        },
-        {
-            "accessory": "Script2",
-            "name": "LED_test_2",
-            "on": "sh /home/pi/test/on.sh",
-            "off": "sh /home/pi/test/off.sh",
-            "fileState": "/home/pi/test/script.State",
+            "on": "python /home/pi/Repos/Domotic_Project/LED/lightON.py",
+            "off": "python /home/pi/Repos/Domotic_Project/LED/lightOFF.py",
+            "state": "python /home/pi/Repos/Domotic_Project/LED/lightSTAT.py",
             "on_value": "true"
         },
         {
             "accessory": "Script2",
             "name": "LED_WIFI",
-            "on": "sh /home/pi/test/on.sh",
-            "off": "sh /home/pi/test/off.sh",
-            "fileState": "/home/pi/test/script.State",
+            "on": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py ec:fa:bc:87:77:bd,PIN,0,ON I",
+            "off": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py ec:fa:bc:87:77:bd,PIN,0,OFF I",
+            "state": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py ec:fa:bc:87:77:bd,PIN,0,STAT I",
             "on_value": "true"
         },
         {
+            "accessory": "StatelessLock",
+            "name": "TESTlock",
+            "open": "echo True"
+        },
+        {
             "accessory": "StatelessSwitch",
-            "name": "Cam Sal UP",
+            "name": "CamUP",
             "onUrl": "http://192.168.1.150/decoder_control.cgi?command=0&onestep=1&user=admin&pwd=123456"
         },
         {
             "accessory": "StatelessSwitch",
-            "name": "Cam Sal DOWN",
+            "name": "CamDOWN",
             "onUrl": "http://192.168.1.150/decoder_control.cgi?command=2&onestep=1&user=admin&pwd=123456"
         },
         {
             "accessory": "StatelessSwitch",
-            "name": "Cam Sal LEFT",
+            "name": "CamLEFT",
             "onUrl": "http://192.168.1.150/decoder_control.cgi?command=4&onestep=1&user=admin&pwd=123456"
         },
         {
             "accessory": "StatelessSwitch",
-            "name": "Cam Sal RIGTH",
+            "name": "CamRIGTH",
             "onUrl": "http://192.168.1.150/decoder_control.cgi?command=6&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "Script2",
+            "name": "CamSalIR",
+            "on": "python /home/pi/Repos/Domotic_Project/Camera/CameraControlIR.py ON",
+            "off": "python /home/pi/Repos/Domotic_Project/Camera/CameraControlIR.py OFF",
+            "state": "python /home/pi/Repos/Domotic_Project/Camera/CameraControlIR.py STAT",
+            "on_value": "True"
         }
     ],
     "platforms": [
