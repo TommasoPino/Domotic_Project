@@ -5,6 +5,17 @@ import os.path
 import datetime
 import sys
 
+#class Unbuffered(object):
+#   def __init__(self, stream):
+#       self.stream = stream
+#   def write(self, data):
+#       self.stream.write(data)
+#       self.stream.flush()
+#   def writelines(self, datas):
+#       self.stream.writelines(datas)
+#       self.stream.flush()
+#   def __getattr__(self, attr):
+#       return getattr(self.stream, attr)
 
 def log(message):
     file = open(filelog, 'r+')
@@ -15,7 +26,8 @@ def log(message):
     else:
         file.write(str(datetime.datetime.now()) + ': ' + message)
         file.write('\n')
-
+	#sys.stdout = Unbuffered(sys.stdout)
+	print(str(datetime.datetime.now()) + ': ' + message)
     file.close()
 
 
@@ -196,6 +208,7 @@ filelog = pathusr + 'Server.log'
 
 # check the existance of the file log
 checkFileAndCreate(filelog)
+#sys.stdout = Unbuffered(sys.stdout)
 log(None)
 log('Server Turned on, start initialization')
 
@@ -234,7 +247,7 @@ sockLocal.listen(5)
 # successiva, per poi decretarlo disperso)
 
 # socket di invio messaggi
-broadcastwaitTime = 1  # minute
+broadcastwaitTime = 15  # minute
 BROADCASTIP = '255.255.255.255'
 BROADCASTPORT = 51082
 broadcastSocket = (BROADCASTIP, BROADCASTPORT)

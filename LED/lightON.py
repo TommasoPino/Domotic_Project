@@ -11,5 +11,7 @@ GPIO.setup(ledpin, GPIO.OUT)
 
 GPIO.output(ledpin, 1)
 
-file = open('lightON','w')
-file.close()
+# filename = os.path.join('/home/pi/.DomoticPythonServer', 'lightON')
+
+# file = open(filename,'w')
+# file.close()
