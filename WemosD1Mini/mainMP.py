@@ -207,28 +207,33 @@ while True:
 
         try:
             conn, addr = sockServer.accept()
+            conn.settimeout(2)
             log('Connection address:' + str(addr))
-            time.sleep(0.01)
+            # time.sleep(0.01)
             while 1:
-                temp = conn.recv(1024)
-                if not temp:
+                try:
+                    temp = conn.recv(1024)
+                    if not temp:
+                        break
+                    messageFromServer = stripInMessage(temp)
+                    log('Recived message from server: ' + messageFromServer)
+                    elements = messageFromServer.split(',')
+                    messageToServer = 'ERROR'
+                    if elements[0]=='PIN':
+                        idpin = int(elements[1])
+                        if(len(pins)-1>=idpin):
+                            if elements[2]=='ON':
+                                pins[idpin].off()
+                                messageToServer = statusPin(pins,idpin)
+                            elif elements[2]=='OFF':
+                                pins[idpin].on()
+                                messageToServer = statusPin(pins,idpin)
+                            elif elements[2]=='STAT':
+                                messageToServer = statusPin(pins,idpin)
+                    conn.send(messageToServer)
                     break
-                messageFromServer = stripInMessage(temp)
-                log('Recived message from server: ' + messageFromServer)
-                elements = messageFromServer.split(',')
-                messageToServer = 'ERROR'
-                if elements[0]=='PIN':
-                    idpin = int(elements[1])
-                    if(len(pins)-1>=idpin):
-                        if elements[2]=='ON':
-                            pins[idpin].off()
-                            messageToServer = statusPin(pins,idpin)
-                        elif elements[2]=='OFF':
-                            pins[idpin].on()
-                            messageToServer = statusPin(pins,idpin)
-                        elif elements[2]=='STAT':
-                            messageToServer = statusPin(pins,idpin)
-                conn.send(messageToServer)
+                except Exception as ex:
+                    pass
             conn.close()
         except Exception as ex:
             pass

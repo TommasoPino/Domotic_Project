@@ -116,7 +116,6 @@ def listenLocal():
                 log(str(device))
                 try:
                     IPSEND = (device[0][0], IPPORT)
-
                     sockServer.connect(IPSEND)
                 except:
                     IPSEND = (device[0], IPPORT)
@@ -125,19 +124,19 @@ def listenLocal():
                 for i in range(4):
                     try:
                         sockServer.send(messagetosend)
-                        log('Message sent to Device')
+                        # log('Message sent to Device')
                         messagerecived = sockServer.recv(BUFFER_SIZE)
                         log('Message recieve from Device: ' + messagerecived)
-                        log('Connection Closed')
+                        # log('Connection Closed')
                         break
                     except Exception as ex:
                         log('An error occours: ' + ex.message)
                 sockServer.close()
                 elementsin = messagerecived.split(',')
                 if elements[0] == elementsin[0]:
-                    log('Match ' + elementsin[0])
-                conn.send(messagerecived)
-                log('Resent message')
+                    # log('Match ' + elementsin[0])
+                    conn.send(messagerecived)
+                # log('Resent message')
             except sock.error as ex:
                 log(str(ex))
                 conn.send('Error')
@@ -147,7 +146,7 @@ def listenLocal():
             except Exception as ex:
                 conn.send('Error')
                 log(ex.message)
-        log('Closed connection')
+        # log('Closed connection')
         conn.close()
     except sock.timeout:
         pass
@@ -188,12 +187,12 @@ def listenBroadcast():
 def updatetable(devicedict,filename):
     log('updating table')
     try:
-        # file = open(filename, 'w')
-        # file.close()
-        for deviceID, deviceList in devicedict:
-            log(str(deviceID + deviceList[0]))
-            # add2table(deviceID+deviceList,filename)
-        # log('done')
+        file = open(filename, 'w')
+        file.close()
+        for deviceID in devicedict:
+            # log(str(deviceID + devicedict[0]))
+            add2table([deviceID] + devicedict[deviceID],filename)
+        log('done')
     except Exception as ex:
         log(str(ex))
         
@@ -247,7 +246,7 @@ sockLocal.listen(5)
 # successiva, per poi decretarlo disperso)
 
 # socket di invio messaggi
-broadcastwaitTime = 15  # minute
+broadcastwaitTime = 1  # minute
 BROADCASTIP = '255.255.255.255'
 BROADCASTPORT = 51082
 broadcastSocket = (BROADCASTIP, BROADCASTPORT)
