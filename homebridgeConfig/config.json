@@ -15,6 +15,14 @@
             "state": "python /home/pi/Repos/Domotic_Project/LED/lightSTAT.py",
             "on_value": "true"
         },
+	{
+            "accessory": "Script2",
+            "name": "LED_Relay",
+            "on": "python /home/pi/Repos/Domotic_Project/LED/lightSwitch.py ON",
+            "off": "python /home/pi/Repos/Domotic_Project/LED/lightSwitch.py OFF",
+            "state": "python /home/pi/Repos/Domotic_Project/LED/lightSwitch.py STATUS",
+            "on_value": "True"
+        },
         {
             "accessory": "Script2",
             "name": "LED_WIFI",
@@ -26,7 +34,7 @@
         {
             "accessory": "StatelessLock",
             "name": "TESTlock",
-            "open": "echo True"
+            "open": "python /home/pi/Repos/Domotic_Project/LED/openDoor.py ON"
         },
         {
             "accessory": "StatelessSwitch",
@@ -73,6 +81,13 @@
                     }
                 }
             ]                
-        }
+        },
+	{
+	    "platform": "Alexa",
+	    "name": "Alexa",
+	    "username": "tommaso.pino",
+            "password":"4i(JPwcXmmz7?ziV",
+	    "pin": "031-45-155"
+	}
     ]
 }

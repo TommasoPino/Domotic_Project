@@ -4,6 +4,8 @@ import time
 import os.path
 import datetime
 import sys
+import logging
+import logging.handlers as handlers
 
 #class Unbuffered(object):
 #   def __init__(self, stream):
@@ -17,25 +19,25 @@ import sys
 #   def __getattr__(self, attr):
 #       return getattr(self.stream, attr)
 
-def log(message):
-    file = open(filelog, 'r+')
-    lines = file.readlines()
-    if message == None:
-        file.write('\n')
-        file.write('\n')
-    else:
-        file.write(str(datetime.datetime.now()) + ': ' + message)
-        file.write('\n')
-	#sys.stdout = Unbuffered(sys.stdout)
-	print(str(datetime.datetime.now()) + ': ' + message)
-    file.close()
+# def log(message):
+#     file = open(filelog, 'r+')
+#     lines = file.readlines()
+#     if message == None:
+#         file.write('\n')
+#         file.write('\n')
+#     else:
+#         file.write(str(datetime.datetime.now()) + ': ' + message)
+#         file.write('\n')
+# 	#sys.stdout = Unbuffered(sys.stdout)
+# 	print(str(datetime.datetime.now()) + ': ' + message)
+#     file.close()
 
 
 def readtable(filename):
     C = {}
     try:
         file = open(filename, 'r')
-        log('Reading ' + filename + ' to populate the dictionary')
+        logger.info('Reading ' + filename + ' to populate the dictionary')
         lines = file.readlines()
         nel = 0
         for line in lines:
@@ -54,7 +56,7 @@ def readtable(filename):
                 nel = nel + 1
                 C[elements[0].strip()] = listel
 
-        log('Found ' + str(nel) + ' device in the file')
+        logger.info('Found ' + str(nel) + ' device in the file')
         file.close()
     except:
         pass
@@ -76,7 +78,7 @@ def add2table(input, filename):
     for value in input[1:]:
         file.write(', %15s' % (str(value)))
     file.write('\n')
-    log('Added new elements to the Device Table')
+    logger.info('Added new elements to the Device Table')
     file.close()
 
 
@@ -107,46 +109,46 @@ def listenLocal():
             message = conn.recv(BUFFER_SIZE)
             if not message:
                 break
-            log('Received internal message ' + message)
+            logger.info('Received internal message ' + message)
             elements = message.split(',')
             try:
                 device = DeviceDict[elements[0]]
-                log('Found device with id: ' + elements[0])
+                logger.info('Found device with id: ' + elements[0])
                 messagetosend = composemessage(elements[1:])
-                log(str(device))
+                logger.debug(str(device))
                 try:
                     IPSEND = (device[0][0], IPPORT)
                     sockServer.connect(IPSEND)
                 except:
                     IPSEND = (device[0], IPPORT)
                     sockServer.connect(IPSEND)
-                log('Opened connection with: ' + str(IPSEND))
+                logger.info('Opened connection with: ' + str(IPSEND))
                 for i in range(4):
                     try:
                         sockServer.send(messagetosend)
-                        # log('Message sent to Device')
+                        logger.debug('Message sent to Device')
                         messagerecived = sockServer.recv(BUFFER_SIZE)
-                        log('Message recieve from Device: ' + messagerecived)
-                        # log('Connection Closed')
+                        logger.info('Message recieve from Device: ' + messagerecived)
+                        logger.debug('Connection Closed')
                         break
                     except Exception as ex:
-                        log('An error occours: ' + ex.message)
+                        logger.warning('An error occours: ' + ex.message)
                 sockServer.close()
                 elementsin = messagerecived.split(',')
                 if elements[0] == elementsin[0]:
-                    # log('Match ' + elementsin[0])
+                    logger.debug('Match ' + elementsin[0])
                     conn.send(messagerecived)
-                # log('Resent message')
+                logger.debug('Resent message')
             except sock.error as ex:
-                log(str(ex))
+                logger.warning(str(ex))
                 conn.send('Error')
             except KeyError:
-                log('Key ' + elements[0] + ' not found!')
+                logger.warning('Key ' + elements[0] + ' not found!')
                 conn.send('Not Found')
             except Exception as ex:
                 conn.send('Error')
-                log(ex.message)
-        # log('Closed connection')
+                logger.warning(ex.message)
+        logger.debug('Closed connection')
         conn.close()
     except sock.timeout:
         pass
@@ -161,62 +163,85 @@ def listenBroadcast():
     global DeviceDict
     try:
         message = sockBroad.recvfrom(1024)
-        log('Recived External message: "' +
+        logger.info('Recived External message: "' +
             str(message[0]) + '" ; from: ' + str(message[1]))
 
         elements = stripInMessage(message[0]).split(',')
         if elements[0] == 'D':
-            log('Message from a device')
+            logger.info('Message from a device')
             try:
                 Device = DeviceDict[elements[1]]
-                log('Device already present on table, checking for updates')
+                logger.info('Device already present on table, checking for updates')
                 if Device[0]!=elements[2]:
-                    log('changed ip from ' + str(Device[0]) + ' to ' + str(elements[2]))
+                    logger.info('changed ip from ' + str(Device[0]) + ' to ' + str(elements[2]))
                     DeviceDict[elements[1]] = elements[2:]
                     updatetable(DeviceDict,FileDataDevice)
             except KeyError:
                 DeviceDict[elements[1]] = elements[2:]
                 add2table(elements[1:], FileDataDevice)
         elif elements[0] == 'S':
-            log('Message from Server ignored')
+            logger.debug('Message from Server ignored')
         else:
-            log('Message ignored')
+            logger.warning('Message ignored')
     except sock.timeout:
         pass
 
 def updatetable(devicedict,filename):
-    log('updating table')
+    logger.info('updating table')
     try:
         file = open(filename, 'w')
         file.close()
         for deviceID in devicedict:
-            # log(str(deviceID + devicedict[0]))
+            logger.debug(str(deviceID + devicedict[0]))
             add2table([deviceID] + devicedict[deviceID],filename)
-        log('done')
+        logger.debug('done')
     except Exception as ex:
-        log(str(ex))
+        logger.warning(str(ex))
         
     
 
 
 # start the program
 DeviceDict = {}
+# pathusr = '/home/pi/.DomoticPythonServer/'
 pathusr = '/home/pi/.DomoticPythonServer/'
 FileDataDevice = pathusr + 'DeviceList.csv'
-filelog = pathusr + 'Server.log'
+FileLogPath = pathusr + 'DomoticServer.log'
+logname = 'DomoticServer'
+logger = logging.getLogger(logname)
+logger.setLevel(logging.INFO)
+# logging
+# Here we define our formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# check the existance of the file log
-checkFileAndCreate(filelog)
+logHandler = handlers.TimedRotatingFileHandler(FileLogPath, when='midnight', interval=1, backupCount=3)
+logHandler.suffix = "%Y%m%d"
+logHandler.setLevel(logging.INFO)
+# Here we set our logHandler's formatter
+logHandler.setFormatter(formatter)
+logger.addHandler(logHandler)
+
+# add ch to logger
+# ch = logging.StreamHandler()
+# ch.setLevel(logging.DEBUG)
+# ch.setFormatter(formatter)
+# logger.addHandler(ch)
+
+
+
+# filelog = pathusr + 'Server.log'
+# # check the existance of the file log
+# checkFileAndCreate(filelog)
 #sys.stdout = Unbuffered(sys.stdout)
-log(None)
-log('Server Turned on, start initialization')
+logger.info('\n\n')
+logger.info('Server Turned on, start initialization')
 
 # check the existance of the Devices file
-log('Check existance of ' + FileDataDevice)
+logger.info('Check existance of ' + FileDataDevice)
 checkFileAndCreate(FileDataDevice)
 
 # Build the device dictionary
-log('Build table from file')
+logger.info('Build table from file')
 DeviceDict = readtable(FileDataDevice)
 
 
@@ -272,7 +297,7 @@ sec2millis = 1000
 min2sec = 60
 min2millis = min2sec*sec2millis
 
-log('Server start main loop')
+logger.info('Server start main loop')
 millis_old = 0
 while True:
     millis_new = int(round(time.time()*sec2millis))
@@ -282,7 +307,7 @@ while True:
         if ((millis_pass/min2millis) >= broadcastwaitTime):
             millis_old = millis_new
             sockBroad.sendto(broadcastMessage, broadcastSocket)
-            log('Sent "'+broadcastMessage+'" to the broadcast')
+            logger.info('Sent "'+broadcastMessage+'" to the broadcast')
 
         # prova a ricevere un messaggio dal server interno
         listenLocal()
@@ -291,11 +316,10 @@ while True:
         listenBroadcast()
 
     except KeyboardInterrupt:
-        print('Keybord interruption detected')
-        log('Server shuted down by KeybordInterruption')
+        logger.warning('Server shuted down by KeybordInterruption')
         break
     except Exception as ex:
-        log(ex.message)
+        logger.warning(ex.message)
         break
 
 sockLocal.close()

@@ -1,8 +1,8 @@
 var Service, Characteristic;
 var sys = require('sys');
 var exec = require('child_process').exec;
-var assign = require('object-assign');
-var fileExists = require('file-exists');
+//var assign = require('object-assign');
+//var fileExists = require('file-exists');
 
 
 module.exports = function(homebridge) {
@@ -65,6 +65,8 @@ StatelessLock.prototype = {
         statelessDoor
             .lockservice
             .setCharacteristic(Characteristic.LockCurrentState,this.newstate);
+        exec(command);
+
         statelessDoor.resetDoorWithTimeout();
 
 
