@@ -95,7 +95,7 @@ script3Accessory.prototype.getServices = function() {
     var TypeService = new Service.Switch(this.name);
   }
   else if (this.service == 'heater') {
-    var TypeService = new Service.Faucet(this.name);
+    var TypeService = new Service.Outlet(this.name);
     // var TypeService = new Service.HeaterCooler(this.name);
   }
 
@@ -105,7 +105,7 @@ script3Accessory.prototype.getServices = function() {
     .on('set', this.setState.bind(this));
   }
   else if (this.service == 'heater') {
-    var characteristic = TypeService.getCharacteristic(Characteristic.Active)
+    var characteristic = TypeService.getCharacteristic(Characteristic.On)
     .on('set', this.setState.bind(this));
   }
 
