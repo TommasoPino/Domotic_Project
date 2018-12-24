@@ -1,4 +1,4 @@
-var Service;
+var Service = require("hap-nodejs").Service;
 var Characteristic;
 
 var sys = require('sys');
@@ -86,21 +86,28 @@ script3Accessory.prototype.getState = function(callback) {
 
 script3Accessory.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
-  if (this.service == 'switch'){
-    var TypeService = new Service.Switch(this.name);
-  }
-  else if (this.service == 'heater') {
-    var TypeService = new Service.HeaterCooler(this.name);
-  }
-
-
   informationService
   .setCharacteristic(Characteristic.Manufacturer, 'script3 Manufacturer')
   .setCharacteristic(Characteristic.Model, 'script3 Model')
   .setCharacteristic(Characteristic.SerialNumber, 'script3 Serial Number');
 
-  var characteristic = TypeService.getCharacteristic(Characteristic.On)
-  .on('set', this.setState.bind(this));
+  if (this.service == 'switch'){
+    var TypeService = new Service.Switch(this.name);
+  }
+  else if (this.service == 'heater') {
+    var TypeService = new Service.Faucet(this.name);
+    // var TypeService = new Service.HeaterCooler(this.name);
+  }
+
+
+  if (this.service == 'switch'){
+    var characteristic = TypeService.getCharacteristic(Characteristic.On)
+    .on('set', this.setState.bind(this));
+  }
+  else if (this.service == 'heater') {
+    var characteristic = TypeService.getCharacteristic(Characteristic.Active)
+    .on('set', this.setState.bind(this));
+  }
 
   if (this.stateCommand || this.fileState) {
     characteristic.on('get', this.getState.bind(this))
