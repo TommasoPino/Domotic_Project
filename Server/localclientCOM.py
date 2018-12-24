@@ -36,3 +36,5 @@ else:
 
 if kind=='I':
     StatusSwitch(message)
+elif kind=='H':
+    StatusSwitch(message)
