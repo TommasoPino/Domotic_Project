@@ -62,7 +62,7 @@ script3Accessory.prototype.setState = function(powerOn, callback) {
     callback(null);
 }
 
-script2Accessory.prototype.getState = function(callback) {
+script3Accessory.prototype.getState = function(callback) {
   var accessory = this;
   var command = accessory['stateCommand'];
   var stdout = "none";  
