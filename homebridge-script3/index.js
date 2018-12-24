@@ -86,14 +86,20 @@ script2Accessory.prototype.getState = function(callback) {
 
 script2Accessory.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
-  var switchService = new Service.Switch(this.name);
+  if (this.service == 'switch'){
+    var TypeService = new Service.Switch(this.name);
+  }
+  else if (this.service == 'heater') {
+    var TypeService = new Service.HeaterCooler(this.name);
+  }
+
 
   informationService
-  .setCharacteristic(Characteristic.Manufacturer, 'script2 Manufacturer')
-  .setCharacteristic(Characteristic.Model, 'script2 Model')
-  .setCharacteristic(Characteristic.SerialNumber, 'script2 Serial Number');
+  .setCharacteristic(Characteristic.Manufacturer, 'script3 Manufacturer')
+  .setCharacteristic(Characteristic.Model, 'script3 Model')
+  .setCharacteristic(Characteristic.SerialNumber, 'script3 Serial Number');
 
-  var characteristic = switchService.getCharacteristic(Characteristic.On)
+  var characteristic = TypeService.getCharacteristic(Characteristic.On)
   .on('set', this.setState.bind(this));
 
   if (this.stateCommand || this.fileState) {
@@ -104,14 +110,14 @@ script2Accessory.prototype.getServices = function() {
     var fileCreatedHandler = function(path, stats){
       if (!this.currentState) {
           this.log('File ' + path + ' was created');
-	      switchService.setCharacteristic(Characteristic.On, true);
+          TypeService.setCharacteristic(Characteristic.On, true);
       }
     }.bind(this);
   
     var fileRemovedHandler = function(path, stats){
       if (this.currentState) {
           this.log('File ' + path + ' was deleted');
-	      switchService.setCharacteristic(Characteristic.On, false);
+          TypeService.setCharacteristic(Characteristic.On, false);
 	  }
     }.bind(this);
   
@@ -119,5 +125,5 @@ script2Accessory.prototype.getServices = function() {
     watcher.on('add', fileCreatedHandler);
     watcher.on('unlink', fileRemovedHandler);
   }
-  return [switchService];
+  return [TypeService];
 }
