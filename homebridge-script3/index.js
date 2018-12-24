@@ -1,4 +1,4 @@
-var Service = require("hap-nodejs").Service;
+var Service;
 var Characteristic;
 
 var sys = require('sys');
