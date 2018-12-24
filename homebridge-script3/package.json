@@ -1,0 +1,19 @@
+{
+  "name": "homebridge-script3",
+  "version": "0.2.7",
+  "license": "MIT",
+  "description": "script plugin for homebridge: https://github.com/nfarina/homebridge",
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge-script3"
+  ],
+  "engines": {
+    "homebridge": ">=0.2.0",
+    "node": ">=6.0.0"
+  },
+  "dependencies": {
+    "object-assign": "^4.0.1",
+    "file-exists": "^3.0.2",
+    "chokidar": "^2.0.4"
+  }
+}
