@@ -50,7 +50,7 @@ function script3Accessory(log, config) {
 }
 */
 
-script2Accessory.prototype.setState = function(powerOn, callback) {
+script3Accessory.prototype.setState = function(powerOn, callback) {
   var accessory = this;
   var state = powerOn ? 'on' : 'off';
   var prop = state + 'Command';
@@ -84,7 +84,7 @@ script2Accessory.prototype.getState = function(callback) {
   }
 }
 
-script2Accessory.prototype.getServices = function() {
+script3Accessory.prototype.getServices = function() {
   var informationService = new Service.AccessoryInformation();
   if (this.service == 'switch'){
     var TypeService = new Service.Switch(this.name);
