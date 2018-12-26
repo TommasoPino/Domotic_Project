@@ -97,6 +97,11 @@
             "username": "tommaso.pino",
                 "password":"4i(JPwcXmmz7?ziV",
             "pin": "031-45-155"
+        },
+        {
+            "platform":"TadoAC",
+            "username":"tommaso.pino@me.com",
+            "password":"Tommaso88"
         }
     ]
 }
