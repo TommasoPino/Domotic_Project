@@ -1,0 +1,107 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CC:22:3D:E3:CE:30",
+        "port": 51828,
+        "pin": "031-45-155"
+    },
+    "description": "",
+    "accessories": [
+        {
+            "accessory": "Script2",
+            "name": "LED_test",
+            "on": "python /home/pi/Repos/Domotic_Project/LED/lightON.py",
+            "off": "python /home/pi/Repos/Domotic_Project/LED/lightOFF.py",
+            "state": "python /home/pi/Repos/Domotic_Project/LED/lightSTAT.py",
+            "on_value": "true"
+        },
+	{
+            "accessory": "Script2",
+            "name": "LED_Relay",
+            "on": "python /home/pi/Repos/Domotic_Project/LED/lightSwitch.py ON",
+            "off": "python /home/pi/Repos/Domotic_Project/LED/lightSwitch.py OFF",
+            "state": "python /home/pi/Repos/Domotic_Project/LED/lightSwitch.py STATUS",
+            "on_value": "True"
+        },
+        {
+            "accessory": "Script2",
+            "name": "LED_WIFI",
+            "on": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py ec:fa:bc:87:77:bd,PIN,0,ON I",
+            "off": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py ec:fa:bc:87:77:bd,PIN,0,OFF I",
+            "state": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py ec:fa:bc:87:77:bd,PIN,0,STAT I",
+            "on_value": "true"
+        },
+	{
+            "accessory": "Script3",
+            "service": "heater",
+            "name": "Heater_WIFI",
+            "on": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py dc:4f:22:37:a3:d0,PIN,0,ON H",
+            "off": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py dc:4f:22:37:a3:d0,PIN,0,OFF H",
+            "state": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py dc:4f:22:37:a3:d0,PIN,0,STAT H",
+            "on_value": "true"
+        },
+        {
+            "accessory": "StatelessLock",
+            "name": "TESTlock",
+            "open": "python /home/pi/Repos/Domotic_Project/LED/openDoor.py ON"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "CamUP",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=0&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "CamDOWN",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=2&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "CamLEFT",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=4&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "StatelessSwitch",
+            "name": "CamRIGTH",
+            "onUrl": "http://192.168.1.150/decoder_control.cgi?command=6&onestep=1&user=admin&pwd=123456"
+        },
+        {
+            "accessory": "Script2",
+            "name": "CamSalIR",
+            "on": "python /home/pi/Repos/Domotic_Project/Camera/CameraControlIR.py ON",
+            "off": "python /home/pi/Repos/Domotic_Project/Camera/CameraControlIR.py OFF",
+            "state": "python /home/pi/Repos/Domotic_Project/Camera/CameraControlIR.py STAT",
+            "on_value": "True"
+        }
+    ],
+    "platforms": [
+        {
+            "platform": "Camera-ffmpeg",
+            "cameras": [
+                {
+                    "name": "Camera Salotto",
+                    "videoConfig": {
+                        "source": "-re -i http://192.168.1.150/videostream.cgi/?user=admin&pwd=123456",
+                        "stillImageSource": "-i http://192.168.1.150/snapshot.cgi/?user=admin&pwd=123456",
+                        "maxStreams": 2,
+                        "maxWidth": 1280,
+                        "maxHeight": 720,
+                        "maxFPS": 30
+                    }
+                }
+            ]                
+        },
+	{
+	    "platform": "Alexa",
+	    "name": "Alexa",
+	    "username": "tommaso.pino",
+            "password":"4i(JPwcXmmz7?ziV",
+	    "pin": "031-45-155"
+	},
+	{
+        "platform":"TadoAC",
+        "username":"tommaso.pino@me.com",
+        "password":"Tommaso88"
+    }
+    ]
+}

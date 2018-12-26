@@ -209,14 +209,16 @@ FileDataDevice = pathusr + 'DeviceList.csv'
 FileLogPath = pathusr + 'DomoticServer.log'
 logname = 'DomoticServer'
 logger = logging.getLogger(logname)
-logger.setLevel(logging.INFO)
+# logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 # logging
 # Here we define our formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 logHandler = handlers.TimedRotatingFileHandler(FileLogPath, when='midnight', interval=1, backupCount=3)
 logHandler.suffix = "%Y%m%d"
-logHandler.setLevel(logging.INFO)
+# logHandler.setLevel(logging.INFO)
+logHandler.setLevel(logging.DEBUG)
 # Here we set our logHandler's formatter
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
