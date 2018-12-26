@@ -116,12 +116,12 @@ def listenLocal():
                 logger.info('Found device with id: ' + elements[0])
                 messagetosend = composemessage(elements[1:])
                 logger.debug(str(device))
-                try:
-                    IPSEND = (device[0][0], IPPORT)
-                    sockServer.connect(IPSEND)
-                except:
-                    IPSEND = (device[0], IPPORT)
-                    sockServer.connect(IPSEND)
+                # try:
+                #     IPSEND = (device[0][0], IPPORT)
+                #     sockServer.connect(IPSEND)
+                # except:
+                IPSEND = (device[0], IPPORT)
+                sockServer.connect(IPSEND)
                 logger.info('Opened connection with: ' + str(IPSEND))
                 for i in range(4):
                     try:
