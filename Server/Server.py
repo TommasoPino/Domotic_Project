@@ -121,6 +121,7 @@ def listenLocal():
                 #     sockServer.connect(IPSEND)
                 # except:
                 IPSEND = (device[0], IPPORT)
+                logger.info('Try opening connection with: ' + str(IPSEND))
                 sockServer.connect(IPSEND)
                 logger.info('Opened connection with: ' + str(IPSEND))
                 for i in range(4):
