@@ -102,6 +102,12 @@
             "platform":"TadoAC",
             "username":"tommaso.pino@me.com",
             "password":"Tommaso88"
-        }
+        },
+        {
+            "platform":"TadoPlatform",
+            "name":"Tado",
+            "username":"tommaso.pino@me.com",
+            "password":"Tommaso88"
+            }
     ]
 }
