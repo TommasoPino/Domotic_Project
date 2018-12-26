@@ -153,6 +153,12 @@ def listenLocal():
         conn.close()
     except sock.timeout:
         pass
+    
+    try:
+        logger.debug('Connection Closing')
+        sockServer.close()
+    except:
+        pass
     return
 
 def checkFileAndCreate(filename):
