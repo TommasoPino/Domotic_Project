@@ -250,7 +250,7 @@ DeviceDict = readtable(FileDataDevice)
 # Define Ip of server and its listen port
 IPSERVER = get_ip_address()
 IPPORT = 51083
-sock.setdefaulttimeout(0.2)
+sock.setdefaulttimeout(1)
 
 # questo script e' il server principale che mette in comunicazione
 # tutti i device wireless con il core homekit, ascolta sulla porta
@@ -273,7 +273,7 @@ sockLocal.listen(5)
 # successiva, per poi decretarlo disperso)
 
 # socket di invio messaggi
-broadcastwaitTime = 1  # minute
+broadcastwaitTime = 5  # minute
 BROADCASTIP = '255.255.255.255'
 BROADCASTPORT = 51082
 broadcastSocket = (BROADCASTIP, BROADCASTPORT)
