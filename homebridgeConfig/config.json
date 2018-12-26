@@ -91,12 +91,12 @@
                 }
             ]                
         },
-	{
-	    "platform": "Alexa",
-	    "name": "Alexa",
-	    "username": "tommaso.pino",
-            "password":"4i(JPwcXmmz7?ziV",
-	    "pin": "031-45-155"
-	}
+        {
+            "platform": "Alexa",
+            "name": "Alexa",
+            "username": "tommaso.pino",
+                "password":"4i(JPwcXmmz7?ziV",
+            "pin": "031-45-155"
+        }
     ]
 }

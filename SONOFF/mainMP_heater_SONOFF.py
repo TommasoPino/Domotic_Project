@@ -10,7 +10,6 @@ import ubinascii
 import urandom
 import math
 
-
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
     leftSpan = leftMax - leftMin
@@ -122,6 +121,10 @@ def sendSocketBroadcast(message):
     except Exception as ex:
         log(str(ex))
 
+def changeMainPin(p):
+    time.sleep(0.050)
+    toggle(pins[0])
+
 log('start initialization')
 mac = ubinascii.hexlify(net.WLAN().config('mac'),':').decode()
 ip  = get_ip_address()
@@ -153,8 +156,10 @@ if ServerIP[1]!=0:
     bindSocketServer()
     sendSocketBroadcast(message)
 
-pins = [machine.Pin(12, machine.Pin.OUT)]
+pins = [machine.Pin(12, machine.Pin.OUT),machine.Pin(0, machine.Pin.IN)]
 pins[0].on()
+
+pins[1].irq(trigger=machine.Pin.IRQ_FALLING, handler=changeMainPin)
 
 sec2millis = 1000
 min2sec    = 60
