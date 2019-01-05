@@ -121,7 +121,7 @@ def listenLocal():
                 #     sockServer.connect(IPSEND)
                 # except:
                 IPSEND = (device[0], IPPORT)
-                for i in range(4):
+                for i in range(10):
                     try:
                         logger.info('Try opening connection with: ' + str(IPSEND))
                         sockServer.connect(IPSEND)
@@ -135,7 +135,7 @@ def listenLocal():
                         break
                     except Exception as ex:
                         logger.warning('An error occours: ' + ex.message)
-                        time.sleep(0.1)
+                        time.sleep(0.2)
                 elementsin = messagerecived.split(',')
                 if elements[0] == elementsin[0]:
                     logger.debug('Match ' + elementsin[0])
