@@ -121,21 +121,21 @@ def listenLocal():
                 #     sockServer.connect(IPSEND)
                 # except:
                 IPSEND = (device[0], IPPORT)
-                logger.info('Try opening connection with: ' + str(IPSEND))
-                sockServer.connect(IPSEND)
-                logger.info('Opened connection with: ' + str(IPSEND))
                 for i in range(4):
                     try:
+                        logger.info('Try opening connection with: ' + str(IPSEND))
+                        sockServer.connect(IPSEND)
+                        logger.info('Opened connection with: ' + str(IPSEND))
                         sockServer.send(messagetosend)
                         logger.debug('Message sent to Device')
                         messagerecived = sockServer.recv(BUFFER_SIZE)
                         logger.info('Message recieve from Device: ' + messagerecived)
                         logger.debug('Connection Closed')
+                        sockServer.close()
                         break
                     except Exception as ex:
                         logger.warning('An error occours: ' + ex.message)
                         time.sleep(0.1)
-                sockServer.close()
                 elementsin = messagerecived.split(',')
                 if elements[0] == elementsin[0]:
                     logger.debug('Match ' + elementsin[0])
