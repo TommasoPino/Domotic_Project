@@ -9,6 +9,7 @@ import time
 import ubinascii
 import urandom
 import math
+from umqtt.simple import MQTTClient
 
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
@@ -122,8 +123,10 @@ def sendSocketBroadcast(message):
         log(str(ex))
 
 def changeMainPin(p):
-    time.sleep(0.050)
+    time.sleep(0.50)
     toggle(pins[0])
+    toggle(pins[2])
+
 
 log('start initialization')
 mac = ubinascii.hexlify(net.WLAN().config('mac'),':').decode()
@@ -156,10 +159,15 @@ if ServerIP[1]!=0:
     bindSocketServer()
     sendSocketBroadcast(message)
 
-pins = [machine.Pin(12, machine.Pin.OUT),machine.Pin(0, machine.Pin.IN)]
+pins = [machine.Pin(12, machine.Pin.OUT),
+        machine.Pin(0, machine.Pin.IN),
+        machine.Pin(13,machine.Pin.OUT)]
+
 pins[0].on()
+pins[2].on()
 
 pins[1].irq(trigger=machine.Pin.IRQ_FALLING, handler=changeMainPin)
+
 
 sec2millis = 1000
 min2sec    = 60
@@ -169,12 +177,13 @@ millis_old = 0
 waitTime = 0
 log('start main loop')
 while True:
+    # time.sleep(0.5)
     try:
         millis_new = int(round(time.time()*sec2millis))
         millis_pass = millis_new-millis_old
         if (millis_pass/min2millis>=waitTime):
             millis_old = millis_new
-            waitTime = 20
+            waitTime = 1
             ip  = get_ip_address()
             message = 'D,' + mac+','+ip+','+boardKind
             sendSocketBroadcast(message)
@@ -198,13 +207,12 @@ while True:
                 else:
                     log('nothong change, server ip is: ' +str(ServerIP[0]))
                     log('nothong change, server port is: ' +str(ServerIP[1]))
-
                     
         except Exception as ex:
             pass
-            # if str(ex).strip()=='[Errno 110] ETIMEDOUT':
+            # if str(ex)=='[Errno 110] ETIMEDOUT':
             #     pass
-            # if str(ex).strip()=='[Errno 22] EINVAL':
+            # if str(ex)=='[Errno 22] EINVAL':
             #     pass
             # else:
             #     log('loop1')
@@ -212,7 +220,7 @@ while True:
 
         try:
             conn, addr = sockServer.accept()
-            conn.settimeout(2)
+            conn.settimeout(1)
             log('Connection address:' + str(addr))
             # time.sleep(0.01)
             while 1:
@@ -229,9 +237,11 @@ while True:
                         if(len(pins)-1>=idpin):
                             if elements[2]=='ON':
                                 pins[idpin].on()
+                                pins[2].on()
                                 messageToServer = statusPin(pins,idpin)
                             elif elements[2]=='OFF':
                                 pins[idpin].off()
+                                pins[2].off()
                                 messageToServer = statusPin(pins,idpin)
                             elif elements[2]=='STAT':
                                 messageToServer = statusPin(pins,idpin)
@@ -250,11 +260,7 @@ while True:
             #     log('loop2')
             #     log(str(ex))
             
-        
-            # if (millis_new-millis_old>=500):
-            #     toggle(pin)
-            #     # time.sleep_messageFromServer(1000)
-            #     sS.sendto('the value is ' + str(pin.value()), (ServerIP[0],12345))
+
     except KeyboardInterrupt:
         log('Detected KeyboardInterrupt')
         break
@@ -268,6 +274,8 @@ while True:
         else:
             log('loop3')
             log(str(ex))
+    
+    time.sleep_ms(20)
 
 sockBroadCast.close()
 closeSocketServer()
