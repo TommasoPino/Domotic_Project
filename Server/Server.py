@@ -101,6 +101,7 @@ def get_ip_address():
 def listenLocal():
     sockServer = sock.socket(sock.AF_INET,  # Internet
                              sock.SOCK_STREAM)  # TCP
+    sockServer.settimeout(3);
     global DeviceDict
     try:
         conn, addr = sockLocal.accept()
@@ -121,11 +122,11 @@ def listenLocal():
                 #     sockServer.connect(IPSEND)
                 # except:
                 IPSEND = (device[0], IPPORT)
+                logger.info('Try opening connection with: ' + str(IPSEND))
+                sockServer.connect(IPSEND)
+                logger.info('Opened connection with: ' + str(IPSEND))
                 for i in range(10):
                     try:
-                        logger.info('Try opening connection with: ' + str(IPSEND))
-                        sockServer.connect(IPSEND)
-                        logger.info('Opened connection with: ' + str(IPSEND))
                         sockServer.send(messagetosend)
                         logger.debug('Message sent to Device')
                         messagerecived = sockServer.recv(BUFFER_SIZE)
