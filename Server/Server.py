@@ -134,7 +134,7 @@ def listenLocal():
                         sockServer.close()
                         break
                     except Exception as ex:
-                        logger.warning('An error occours: ' + ex.message)
+                        logger.warning('An error occours: ' + str(ex))
                         time.sleep(0.2)
                 elementsin = messagerecived.split(',')
                 if elements[0] == elementsin[0]:
