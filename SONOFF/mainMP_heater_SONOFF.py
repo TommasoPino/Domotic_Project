@@ -50,7 +50,12 @@ def stripInMessage(inline):
 def checkFileAndCreate(dir,filename):
     dirfilename = dir+'/'+filename
     log('check file ' + dirfilename)
-    listfile = os.listdir(dir)
+    try:
+        listfile = os.listdir(dir)
+    except Exception as ex:
+        log('created dir ' + dir)
+        os.mkdir(dir)
+        listfile = os.listdir(dir)
     if not (filename in listfile):
         log('file ' + dirfilename + ' not found, it will created')
         file = open(dirfilename,'w')
