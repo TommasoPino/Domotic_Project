@@ -41,6 +41,15 @@
             "on_value": "true"
         },
         {
+            "accessory": "Script3",
+            "service": "heater",
+            "name": "Heater_WIFI_cucina",
+            "on": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py b4:e6:2d:15:7d:8c,PIN,0,ON H",
+            "off": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py b4:e6:2d:15:7d:8c,PIN,0,OFF H",
+            "state": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py b4:e6:2d:15:7d:8c,PIN,0,STAT H",
+            "on_value": "true"
+        },
+        {
             "accessory": "StatelessLock",
             "name": "TESTlock",
             "open": "python /home/pi/Repos/Domotic_Project/LED/openDoor.py ON"

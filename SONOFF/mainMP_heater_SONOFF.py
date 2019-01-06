@@ -9,7 +9,6 @@ import time
 import ubinascii
 import urandom
 import math
-from umqtt.simple import MQTTClient
 
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
