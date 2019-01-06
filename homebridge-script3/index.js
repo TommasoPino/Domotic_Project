@@ -3,8 +3,8 @@ var Characteristic;
 
 var sys = require('sys');
     exec = require('child_process').exec;
-    assign = require('object-assign');
-    fileExists = require('file-exists');
+    // assign = require('object-assign');
+    // fileExists = require('file-exists');
     chokidar = require('chokidar');
 
 module.exports = function(homebridge) {
