@@ -43,7 +43,7 @@
         {   
             "accessory": "Script3",
             "service": "heater",
-            "name": "Heater_WIFI",
+            "name": "Heater_WIFI_2",
             "on": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py 84:0d:8e:51:d3:9a,PIN,0,ON H",
             "off": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py 84:0d:8e:51:d3:9a,PIN,0,OFF H",
             "state": "python /home/pi/Repos/Domotic_Project/Server/localclientCOM.py 84:0d:8e:51:d3:9a,PIN,0,STAT H",
