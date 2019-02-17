@@ -103,7 +103,7 @@ def get_ip_address():
 def listenLocal():
     sockServer = sock.socket(sock.AF_INET,  # Internet
                              sock.SOCK_STREAM)  # TCP
-    sockServer.settimeout(3);
+    sockServer.settimeout(0.2);
     global DeviceDict
     try:
         conn, addr = sockLocal.accept()
