@@ -6,6 +6,8 @@ import datetime
 import sys
 import logging
 import logging.handlers as handlers
+import threading
+import subprocess
 
 #class Unbuffered(object):
 #   def __init__(self, stream):
@@ -238,8 +240,18 @@ logger.addHandler(logHandler)
 # ch.setFormatter(formatter)
 # logger.addHandler(ch)
 
+cmdupdateduckdns = "curl --url  https://nouser:c1524c20-58f6-41ed-ae7564c82ca8@www.duckdns.org/nic/update?hostname=morlupohome"
 
-
+def updateduckdns():
+    t = threading.Timer(21600,updateduckdns)
+    t.daemon = True
+    t.start()
+    p = subprocess.Popen(cmdupdateduckdns, stdout=subprocess.PIPE, shell=True)
+    out, err = p.communicate()
+    logger.info('DuckDns updated')
+t.threading.Timer(300,updateduckdns)
+t.daemon = True
+t.start()
 # filelog = pathusr + 'Server.log'
 # # check the existance of the file log
 # checkFileAndCreate(filelog)
