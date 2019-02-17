@@ -249,7 +249,7 @@ def updateduckdns():
     p = subprocess.Popen(cmdupdateduckdns, stdout=subprocess.PIPE, shell=True)
     out, err = p.communicate()
     logger.info('DuckDns updated')
-t.threading.Timer(300,updateduckdns)
+t = threading.Timer(300,updateduckdns)
 t.daemon = True
 t.start()
 # filelog = pathusr + 'Server.log'
